@@ -43,7 +43,7 @@ This helps management decide where to invest more shelf space and budget.
 2. Open a new query tab
 3. Run the full script in this order:
    - Create the database and tables
-   - Insert the dummy data
+   - Insert the sample data
    - Run each report query one at a time
 
 ```sql
