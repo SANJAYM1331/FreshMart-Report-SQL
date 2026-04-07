@@ -1,7 +1,3 @@
--- =============================================
--- SCHEMA DESIGN
--- =============================================
-
 CREATE TABLE Categories (
     CategoryID INT PRIMARY KEY AUTO_INCREMENT,
     CategoryName VARCHAR(100) NOT NULL
@@ -26,10 +22,6 @@ CREATE TABLE SalesTransactions (
     TotalAmount DECIMAL(10,2),
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
-
--- =============================================
--- DUMMY DATA
--- =============================================
 
 INSERT INTO Categories (CategoryName) VALUES
 ('Dairy'),
@@ -62,12 +54,8 @@ INSERT INTO SalesTransactions (ProductID, QuantitySold, SaleDate, TotalAmount) V
 (9,  2, CURDATE() - INTERVAL 40 DAY,  400.00),
 (10, 4, CURDATE() - INTERVAL 12 DAY,  560.00);
 
--- Note: Products 4 and 8 have no sales (Dead Stock candidates)
 
--- =============================================
 -- REPORT 1: Expiring Soon
--- Products expiring within 7 days with stock > 50
--- =============================================
 
 SELECT 
     p.ProductID,
@@ -81,10 +69,8 @@ JOIN Categories c ON p.CategoryID = c.CategoryID
 WHERE p.ExpiryDate BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)
   AND p.StockCount > 50;
 
--- =============================================
+
 -- REPORT 2: Dead Stock
--- Products with zero sales in the last 60 days
--- =============================================
 
 SELECT 
     p.ProductID,
@@ -99,9 +85,8 @@ WHERE p.ProductID NOT IN (
     WHERE SaleDate >= DATE_SUB(CURDATE(), INTERVAL 60 DAY)
 );
 
--- =============================================
+
 -- REPORT 3: Revenue by Category (Last Month)
--- =============================================
 
 SELECT 
     c.CategoryName,
